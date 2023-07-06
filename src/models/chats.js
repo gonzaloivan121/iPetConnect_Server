@@ -56,6 +56,24 @@ function createRouter(db) {
         );
     });
 
+    router.get('/chat/user/:id', function (req, res, next) {
+        db.query(
+            'SELECT * FROM chat WHERE user1_id=? OR user2_id=?',
+            [
+                req.params.id,
+                req.params.id
+            ],
+            (error, results) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ status: 'error', message: error });
+                } else {
+                    res.status(200).json({ status: 'success', results });
+                }
+            }
+        );
+    });
+
     router.put('/chat/:id', function (req, res, next) {
         let updated_at = new Date();
         db.query(
