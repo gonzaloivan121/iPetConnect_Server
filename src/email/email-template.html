@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            html {
+                font-family: sans-serif;
+                line-height: 1.15;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                -ms-overflow-style: scrollbar;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                font-family: "Open Sans", sans-serif;
+                font-size: 1rem;
+                font-weight: 400;
+                line-height: 1.5;
+                color: #525f7f;
+                text-align: left;
+                background-color: #fff;
+            }
+
+            main {
+                overflow: hidden;
+            }
+
+            main,
+            section {
+                display: block;
+            }
+
+            .position-relative {
+                position: relative !important;
+            }
+
+            .section {
+                position: relative;
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+
+            .container {
+                width: 100%;
+                padding-right: 15px;
+                padding-left: 15px;
+                margin-right: auto;
+                margin-left: auto;
+            }
+
+            .col {
+                flex-basis: 0;
+                flex-grow: 1;
+                max-width: 100%;
+                position: relative;
+                width: 100%;
+                min-height: 1px;
+                padding-right: 15px;
+                padding-left: 15px;
+            }
+
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                margin-right: -15px;
+                margin-left: -15px;
+            }
+
+            .lead {
+                font-size: 1.25rem;
+                font-weight: 300;
+                line-height: 1.7;
+                margin-top: 1.5rem;
+            }
+
+            p {
+                white-space: pre;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main>
+            <div class="position-relative">
+                <section class="section">
+                    <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="cid:logo" height="128">
+                                    <p class="lead">From: </p>
+                                    <p>Name: {{ name }}<br>Email: {{ email }}</p>
+                                    <p class="lead">Message: </p>
+                                    <p>{{ message }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
+</html>

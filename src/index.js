@@ -19,8 +19,12 @@ const config = require('./models/config');
 const users = require('./models/users');
 const language = require('./models/language');
 
+const email = require('./email/email');
+
+// Configure environment variables
 dotenv.config();
 
+// Create a MySQL connection
 const connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -30,11 +34,20 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+// Store the hostname and the port
 const hostname = '127.0.0.1';
 const port = process.env.PORT || 8080;
 
+// Define the CORS options
+const corsOptions = {
+    origin: process.env.CORS_ORIGIN,
+    optionSuccessStatus: 200
+};
+
+// Create a new Express instance
 const app = express()
-    .use(cors())
+    .use(cors(corsOptions))
+    .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json())
     .use(breeds(connection))
     .use(chats(connection))
@@ -48,8 +61,10 @@ const app = express()
     .use(species(connection))
     .use(config(connection))
     .use(users(connection, bcrypt))
-    .use(language(connection));
+    .use(language(connection))
+    .use(email());
 
+// Start listening
 app.listen(port, hostname, () => {
     console.log(`Server is running at '${hostname}:${port}'`);
 });
