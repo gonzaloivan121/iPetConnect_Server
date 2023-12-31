@@ -8,23 +8,23 @@ function createRouter(db) {
     router.post('/message', (req, res, next) => {
         let created_at = new Date();
         db.query(
-            'INSERT INTO message (chat_id, user_id, message, epoch, edited, read, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)',
+            'INSERT INTO message (chat_id, user_id, message, edited, `read`, created_at, updated_at) VALUES (?,?,?,?,?,?,?)',
             [
                 req.body.chat_id,
                 req.body.user_id,
                 req.body.message,
-                req.body.epoch,
                 false,
                 false,
                 created_at,
                 created_at
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Message added successfully' });
+                    res.status(200).json({ success: true, message: 'Message added successfully', result, created_at });
+                    console.log('New message added')
                 }
             }
         );
@@ -77,7 +77,7 @@ function createRouter(db) {
     router.put('/message/:id', function (req, res, next) {
         let updated_at = new Date();
         db.query(
-            'UPDATE message SET message=?, edited=?, read=?, updated_at=? WHERE id=?',
+            'UPDATE message SET message=?, edited=?, `read`=?, updated_at=? WHERE id=?',
             [
                 req.body.message,
                 req.body.edited,
