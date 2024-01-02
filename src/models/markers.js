@@ -25,9 +25,9 @@ function createRouter(db) {
             (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Marker added successfully', result });
+                    res.status(200).json({ success: true, message: 'Marker added successfully', result });
                 }
             }
         );
