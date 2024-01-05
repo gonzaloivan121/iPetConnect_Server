@@ -36,12 +36,12 @@ function createRouter(db) {
     router.get('/marker', function (req, res, next) {
         db.query(
             'SELECT * FROM marker', [],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results});
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -51,12 +51,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM marker WHERE id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -78,12 +78,12 @@ function createRouter(db) {
                 updated_at,
                 req.params.id
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Marker updated successfully' });
+                    res.status(200).json({ success: true, message: 'Marker updated successfully', result });
                 }
             }
         );
@@ -93,12 +93,12 @@ function createRouter(db) {
         db.query(
             'DELETE FROM marker WHERE id=?',
             [req.params.id],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Marker deleted successfully' });
+                    res.status(200).json({ success: true, message: 'Marker deleted successfully', result });
                 }
             }
         );

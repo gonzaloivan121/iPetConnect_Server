@@ -11,7 +11,7 @@ function createRouter(db, bcrypt) {
         bcrypt.hash(req.body.password, 12, function (err, hash) {
             if (err) {
                 console.error(error);
-                res.status(500).json({ status: 'error', message: err });
+                res.status(500).json({ success: false, message: err });
                 return;
             }
             db.query(
@@ -29,12 +29,12 @@ function createRouter(db, bcrypt) {
                     created_at,
                     created_at
                 ],
-                (error, results) => {
+                (error, result) => {
                     if (error) {
                         console.error(error);
-                        res.status(500).json({ status: 'error', message: error });
+                        res.status(500).json({ success: false, message: error });
                     } else {
-                        res.status(200).json({ status: 'success', message: 'User added successfully', results });
+                        res.status(200).json({ success: true, message: 'User added successfully', result });
                     }
                 }
             );
@@ -44,12 +44,12 @@ function createRouter(db, bcrypt) {
     router.get('/user', function (req, res, next) {
         db.query(
             'SELECT * FROM user', [],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -59,12 +59,12 @@ function createRouter(db, bcrypt) {
         db.query(
             'SELECT * FROM user WHERE id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -74,12 +74,12 @@ function createRouter(db, bcrypt) {
         db.query(
             'SELECT * FROM user WHERE id!=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -92,19 +92,19 @@ function createRouter(db, bcrypt) {
             (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
                     if (result.length > 0) {
                         const user = result[0];
                         bcrypt.compare(req.body.password, user.password, function (err, result) {
                             if (result) {
-                                res.status(200).json({ status: 'success', login: true, user });
+                                res.status(200).json({ success: true, login: true, user });
                             } else {
-                                res.status(200).json({ status: 'success', login: false });
+                                res.status(200).json({ success: true, login: false });
                             }
                         });
                     } else {
-                        res.status(404).json({ status: 'not_found', message: 'User not found' });
+                        res.status(404).json({ success: false, message: 'User not found', result });
                     }
                 }
             }
@@ -128,12 +128,12 @@ function createRouter(db, bcrypt) {
                 updated_at,
                 req.params.id
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'User updated successfully' });
+                    res.status(200).json({ success: true, message: 'User updated successfully', result });
                 }
             }
         );
@@ -143,12 +143,12 @@ function createRouter(db, bcrypt) {
         db.query(
             'DELETE FROM user WHERE id=?',
             [req.params.id],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'User deleted successfully' });
+                    res.status(200).json({ success: true, message: 'User deleted successfully', result });
                 }
             }
         );

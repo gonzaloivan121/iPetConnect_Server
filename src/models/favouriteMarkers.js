@@ -15,12 +15,12 @@ function createRouter(db) {
                 created_at,
                 created_at
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Favoruite marker added successfully' });
+                    res.status(200).json({ success: true, message: 'Favoruite marker added successfully', result });
                 }
             }
         );
@@ -29,12 +29,12 @@ function createRouter(db) {
     router.get('/favourite_marker', function (req, res, next) {
         db.query(
             'SELECT * FROM favourite_marker', [],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results});
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -44,12 +44,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM favourite_marker WHERE id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -59,12 +59,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM favourite_marker WHERE user_id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -74,12 +74,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM favourite_marker WHERE marker_id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -95,12 +95,12 @@ function createRouter(db) {
                 updated_at,
                 req.params.id
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Favourite marker updated successfully' });
+                    res.status(200).json({ success: true, message: 'Favourite marker updated successfully', result });
                 }
             }
         );
@@ -110,12 +110,12 @@ function createRouter(db) {
         db.query(
             'DELETE FROM favourite_marker WHERE id=?',
             [req.params.id],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Favourite marker deleted successfully' });
+                    res.status(200).json({ success: true, message: 'Favourite marker deleted successfully', result });
                 }
             }
         );

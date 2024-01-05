@@ -16,12 +16,12 @@ function createRouter(db) {
                 created_at,
                 created_at
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Chat added successfully' });
+                    res.status(200).json({ success: true, message: 'Chat added successfully', result });
                 }
             }
         );
@@ -30,12 +30,12 @@ function createRouter(db) {
     router.get('/chat', function (req, res, next) {
         db.query(
             'SELECT * FROM chat', [],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results});
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -45,12 +45,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM chat WHERE id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -63,12 +63,12 @@ function createRouter(db) {
                 req.params.id,
                 req.params.id
             ],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -85,12 +85,12 @@ function createRouter(db) {
                 updated_at,
                 req.params.id
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Chat updated successfully' });
+                    res.status(200).json({ success: true, message: 'Chat updated successfully', result });
                 }
             }
         );
@@ -100,12 +100,12 @@ function createRouter(db) {
         db.query(
             'DELETE FROM chat WHERE id=?',
             [req.params.id],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Chat deleted successfully' });
+                    res.status(200).json({ success: true, message: 'Chat deleted successfully', result });
                 }
             }
         );

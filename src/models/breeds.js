@@ -15,12 +15,12 @@ function createRouter(db) {
                 created_at,
                 created_at
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Breed added successfully' });
+                    res.status(200).json({ success: true, message: 'Breed added successfully', result });
                 }
             }
         );
@@ -29,12 +29,12 @@ function createRouter(db) {
     router.get('/breed', function (req, res, next) {
         db.query(
             'SELECT * FROM breed', [],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results});
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -44,12 +44,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM breed WHERE id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -59,12 +59,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM breed WHERE species_id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -80,12 +80,12 @@ function createRouter(db) {
                 updated_at,
                 req.params.id
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Breed updated successfully' });
+                    res.status(200).json({ success: true, message: 'Breed updated successfully', result });
                 }
             }
         );
@@ -95,12 +95,12 @@ function createRouter(db) {
         db.query(
             'DELETE FROM breed WHERE id=?',
             [req.params.id],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Breed deleted successfully' });
+                    res.status(200).json({ success: true, message: 'Breed deleted successfully', result });
                 }
             }
         );

@@ -14,12 +14,12 @@ function createRouter(db) {
                 created_at,
                 created_at
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Species added successfully' });
+                    res.status(200).json({ success: true, message: 'Species added successfully', result });
                 }
             }
         );
@@ -28,12 +28,12 @@ function createRouter(db) {
     router.get('/species', function (req, res, next) {
         db.query(
             'SELECT * FROM species', [],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results});
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -43,12 +43,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM species WHERE id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -63,12 +63,12 @@ function createRouter(db) {
                 updated_at,
                 req.params.id
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Species updated successfully' });
+                    res.status(200).json({ success: true, message: 'Species updated successfully', result });
                 }
             }
         );
@@ -78,12 +78,12 @@ function createRouter(db) {
         db.query(
             'DELETE FROM species WHERE id=?',
             [req.params.id],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Species deleted successfully' });
+                    res.status(200).json({ success: true, message: 'Species deleted successfully', result });
                 }
             }
         );

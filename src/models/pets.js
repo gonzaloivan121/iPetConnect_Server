@@ -20,12 +20,12 @@ function createRouter(db) {
                 created_at,
                 created_at
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Pet added successfully' });
+                    res.status(200).json({ success: true, message: 'Pet added successfully', result });
                 }
             }
         );
@@ -34,12 +34,12 @@ function createRouter(db) {
     router.get('/pet', function (req, res, next) {
         db.query(
             'SELECT * FROM pet', [],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results});
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -49,12 +49,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM pet WHERE id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -64,12 +64,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM pet WHERE user_id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -89,12 +89,12 @@ function createRouter(db) {
                 updated_at,
                 req.params.id
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Pet updated successfully' });
+                    res.status(200).json({ success: true, message: 'Pet updated successfully', result });
                 }
             }
         );
@@ -104,12 +104,12 @@ function createRouter(db) {
         db.query(
             'DELETE FROM pet WHERE id=?',
             [req.params.id],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Pet deleted successfully' });
+                    res.status(200).json({ success: true, message: 'Pet deleted successfully', result });
                 }
             }
         );

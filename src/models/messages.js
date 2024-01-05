@@ -24,7 +24,6 @@ function createRouter(db) {
                     res.status(500).json({ success: false, message: error });
                 } else {
                     res.status(200).json({ success: true, message: 'Message added successfully', result, created_at });
-                    console.log('New message added')
                 }
             }
         );
@@ -33,12 +32,12 @@ function createRouter(db) {
     router.get('/message', function (req, res, next) {
         db.query(
             'SELECT * FROM message', [],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results});
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -48,12 +47,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM message WHERE id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -63,12 +62,12 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM message WHERE chat_id=?',
             [req.params.id],
-            (error, results) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', results });
+                    res.status(200).json({ success: true, result });
                 }
             }
         );
@@ -85,12 +84,12 @@ function createRouter(db) {
                 updated_at,
                 req.params.id
             ],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Message updated successfully' });
+                    res.status(200).json({ success: true, message: 'Message updated successfully', result });
                 }
             }
         );
@@ -100,12 +99,12 @@ function createRouter(db) {
         db.query(
             'DELETE FROM message WHERE id=?',
             [req.params.id],
-            (error) => {
+            (error, result) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).json({ status: 'error', message: error });
+                    res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ status: 'success', message: 'Message deleted successfully' });
+                    res.status(200).json({ success: true, message: 'Message deleted successfully', result });
                 }
             }
         );
