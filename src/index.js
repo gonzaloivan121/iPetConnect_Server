@@ -18,6 +18,7 @@ const species = require('./models/species');
 const config = require('./models/config');
 const users = require('./models/users');
 const language = require('./models/language');
+const blogPost = require('./models/blogPost');
 
 const email = require('./email/email');
 
@@ -62,6 +63,7 @@ const app = express()
     .use(config(connection))
     .use(users(connection, bcrypt))
     .use(language(connection))
+    .use(blogPost(connection))
     .use(email());
 
 // Start listening
