@@ -17,8 +17,10 @@ const roles = require('./models/roles');
 const species = require('./models/species');
 const config = require('./models/config');
 const users = require('./models/users');
-const language = require('./models/language');
-const blogPost = require('./models/blogPost');
+const languages = require('./models/languages');
+const blogPosts = require('./models/blogPosts');
+const blogCategories = require('./models/blogCategories');
+const blogComments = require('./models/blogComments');
 
 const email = require('./email/email');
 
@@ -62,8 +64,10 @@ const app = express()
     .use(species(connection))
     .use(config(connection))
     .use(users(connection, bcrypt))
-    .use(language(connection))
-    .use(blogPost(connection))
+    .use(languages(connection))
+    .use(blogPosts(connection))
+    .use(blogCategories(connection))
+    .use(blogComments(connection))
     .use(email());
 
 // Start listening

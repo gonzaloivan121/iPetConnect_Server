@@ -9,11 +9,12 @@ function createRouter(db, bcrypt) {
         let created_at = new Date();
 
         db.query(
-            'INSERT INTO blog_post (title, content, image, user_id, created_at, updated_at) VALUES (?,?,?,?,?,?)',
+            'INSERT INTO blog_post (title, content, image, category_id, user_id, created_at, updated_at) VALUES (?,?,?,?,?,?,?)',
             [
                 req.body.title,
                 req.body.content,
                 req.body.image,
+                req.body.category_id,
                 req.body.user_id,
                 created_at,
                 created_at
@@ -43,9 +44,53 @@ function createRouter(db, bcrypt) {
         );
     });
 
+    router.get('/blog_post/popularity', function (req, res, next) {
+        db.query(
+            'SELECT * FROM blog_post ORDER BY popularity DESC', [],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.get('/blog_post/:id', function (req, res, next) {
         db.query(
             'SELECT * FROM blog_post WHERE id=?',
+            [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/blog_post/blog_category/:id', function (req, res, next) {
+        db.query(
+            'SELECT * FROM blog_post WHERE category_id=?',
+            [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/blog_post/blog_category/:id/popularity', function (req, res, next) {
+        db.query(
+            'SELECT * FROM blog_post WHERE category_id=? ORDER BY popularity DESC',
             [req.params.id],
             (error, result) => {
                 if (error) {
@@ -62,11 +107,13 @@ function createRouter(db, bcrypt) {
         let updated_at = new Date();
 
         db.query(
-            'UPDATE blog_post SET title=?, content=?, image=?, user_id=?, updated_at=? WHERE id=?',
+            'UPDATE blog_post SET title=?, content=?, image=?, popularity=?, category_id=?, user_id=?, updated_at=? WHERE id=?',
             [
                 req.body.title,
                 req.body.content,
                 req.body.image,
+                req.body.popularity,
+                req.body.category_id,
                 req.body.user_id,
                 updated_at,
                 req.params.id
