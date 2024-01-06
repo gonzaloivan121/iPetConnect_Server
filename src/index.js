@@ -38,8 +38,7 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-// Store the hostname and the port
-const hostname = '127.0.0.1';
+// Store the the port
 const port = process.env.PORT || 8080;
 
 // Define the CORS options
@@ -72,6 +71,6 @@ const app = express()
     .use(email());
 
 // Start listening
-app.listen(port, hostname, () => {
-    console.log(`Server is running at '${hostname}:${port}'`);
+app.listen(port, () => {
+    console.log(`Server listening at port: ${port}`);
 });

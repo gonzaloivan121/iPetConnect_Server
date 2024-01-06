@@ -4,7 +4,7 @@ const multer = require('multer');
 const nodemailer = require('nodemailer');
 
 // Store email template path and store the emailTemplate in templateContent
-const templatePath = process.cwd() + '\\src\\email\\email-template.html';
+const templatePath = process.cwd() + '/src/email/email-template.html';
 const templateContent = fs.readFileSync(templatePath, 'utf-8');
 
 // Configure multer to use memory storage to receive attachment
