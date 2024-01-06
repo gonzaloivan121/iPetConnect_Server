@@ -42,4 +42,4 @@ package-lock.json
 
 # Environment Variables
 /src/environments
-.env
+*.env
