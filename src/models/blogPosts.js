@@ -9,9 +9,10 @@ function createRouter(db, bcrypt) {
         let created_at = new Date();
 
         db.query(
-            'INSERT INTO blog_post (title, content, image, category_id, user_id, created_at, updated_at) VALUES (?,?,?,?,?,?,?)',
+            'INSERT INTO blog_post (title, description, content, image, category_id, user_id, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)',
             [
                 req.body.title,
+                req.body.description,
                 req.body.content,
                 req.body.image,
                 req.body.category_id,
@@ -102,6 +103,24 @@ function createRouter(db, bcrypt) {
         );
     });
 
+    router.get('/blog_post/blog_category/:id/excluding/:excludeId', function (req, res, next) {
+        db.query(
+            'SELECT * FROM blog_post WHERE category_id=? AND id!=?',
+            [
+                req.params.id,
+                req.params.excludeId
+            ],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.get('/blog_post/blog_category/:id/popularity', function (req, res, next) {
         db.query(
             'SELECT * FROM blog_post WHERE category_id=? ORDER BY popularity DESC',
@@ -121,9 +140,10 @@ function createRouter(db, bcrypt) {
         let updated_at = new Date();
 
         db.query(
-            'UPDATE blog_post SET title=?, content=?, image=?, popularity=?, category_id=?, user_id=?, updated_at=? WHERE id=?',
+            'UPDATE blog_post SET title=?, description=?, content=?, image=?, popularity=?, category_id=?, user_id=?, updated_at=? WHERE id=?',
             [
                 req.body.title,
+                req.body.description,
                 req.body.content,
                 req.body.image,
                 req.body.popularity,
