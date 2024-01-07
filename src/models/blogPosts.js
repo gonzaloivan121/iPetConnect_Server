@@ -44,6 +44,20 @@ function createRouter(db, bcrypt) {
         );
     });
 
+    router.get('/blog_post/latest', function (req, res, next) {
+        db.query(
+            'SELECT * FROM blog_post ORDER BY id DESC', [],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.get('/blog_post/popularity', function (req, res, next) {
         db.query(
             'SELECT * FROM blog_post ORDER BY popularity DESC', [],
