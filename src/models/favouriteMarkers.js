@@ -57,7 +57,7 @@ function createRouter(db) {
 
     router.get('/favourite_marker/user/:id', function (req, res, next) {
         db.query(
-            'SELECT * FROM favourite_marker WHERE user_id=?',
+            'SELECT m.* FROM marker m RIGHT JOIN favourite_marker fm ON m.id = fm.marker_id WHERE fm.user_id=?',
             [req.params.id],
             (error, result) => {
                 if (error) {
