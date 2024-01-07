@@ -9,10 +9,11 @@ function createRouter(db, bcrypt) {
         let created_at = new Date();
 
         db.query(
-            'INSERT INTO blog_category (name, description, image, created_at, updated_at) VALUES (?,?,?,?,?)',
+            'INSERT INTO blog_category (name, description, popularity, image, created_at, updated_at) VALUES (?,?,?,?,?,?)',
             [
                 req.body.name,
                 req.body.description,
+                req.body.popularity,
                 req.body.image,
                 created_at,
                 created_at
@@ -57,6 +58,35 @@ function createRouter(db, bcrypt) {
         );
     });
 
+    router.get('/blog_category/popularity', function (req, res, next) {
+        db.query(
+            'SELECT * FROM blog_category ORDER BY popularity DESC', [],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/blog_category/popularity/latest/:number', function (req, res, next) {
+        db.query(
+            'SELECT * FROM blog_category ORDER BY popularity DESC LIMIT ?',
+            [Number(req.params.number)],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.get('/blog_category/:id', function (req, res, next) {
         db.query(
             'SELECT * FROM blog_category WHERE id=?',
@@ -76,10 +106,11 @@ function createRouter(db, bcrypt) {
         let updated_at = new Date();
 
         db.query(
-            'UPDATE blog_category SET name=?, description=?, image=?, updated_at=? WHERE id=?',
+            'UPDATE blog_category SET name=?, description=?, popularity=?, image=?, updated_at=? WHERE id=?',
             [
                 req.body.name,
                 req.body.description,
+                req.body.popularity,
                 req.body.image,
                 updated_at,
                 req.params.id
