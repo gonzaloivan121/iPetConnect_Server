@@ -55,6 +55,21 @@ function createRouter(db, bcrypt) {
         );
     });
 
+    router.get('/blog_tag/blog_post/:id', function (req, res, next) {
+        db.query(
+            'SELECT bt.* FROM blog_tag bt INNER JOIN blog_post_tag bpt ON bt.id = bpt.tag_id INNER JOIN blog_post bp ON bpt.post_id = bp.id WHERE bp.id=?',
+            [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.put('/blog_tag/:id', function (req, res, next) {
         let updated_at = new Date();
 
