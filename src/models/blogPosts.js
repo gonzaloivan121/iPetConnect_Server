@@ -106,6 +106,21 @@ function createRouter(db, bcrypt) {
         );
     });
 
+    router.get('/blog_post/blog_tag/:id', function (req, res, next) {
+        db.query(
+            'SELECT bp.* FROM blog_post bp INNER JOIN blog_post_tag bpt ON bp.id = bpt.post_id INNER JOIN blog_tag bt ON bpt.tag_id = bt.id WHERE bt.id=?',
+            [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.get('/blog_post/tags/id/:tag_ids', function (req, res, next) {
         const tagIds = req.params.tag_ids;
         const tagIdsString = "'" + tagIds.split(",").join("','") + "'";
