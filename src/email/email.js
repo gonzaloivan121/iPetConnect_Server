@@ -31,7 +31,7 @@ function createRouter() {
     // Define send endpoint, which will send emails and response with the corresponding status
     router.post('/email/send', upload.single('file'), async (req, res) => {
         try {
-            const { name, email, message } = req.body.body;
+            const { name, email, message } = req.body;
 
             // Extra backend validation
             if (!name || !email || !message) {
@@ -73,11 +73,11 @@ function createRouter() {
 
             // Provide console feedback and return a positive response to the client
             console.log('Email sent:', info.response);
-            res.status(200).json({ success: true, message: 'EMAIL_SENT_SUCCESSFULLY', icon: 'ni ni-like-2' });
+            res.status(200).json({ success: true, message: 'EMAIL_SENT_SUCCESSFULLY' });
         } catch (error) {
             // provide error information in case there is any and send corresponding response
             console.error('Error sending email:', error);
-            res.status(500).json({ success: false, message: 'ERROR_SENDING_EMAIL', icon: 'ni ni-fat-remove' });
+            res.status(500).json({ success: false, message: 'ERROR_SENDING_EMAIL' });
         }
     });
 
