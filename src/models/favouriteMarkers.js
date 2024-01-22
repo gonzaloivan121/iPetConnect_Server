@@ -70,6 +70,24 @@ function createRouter(db) {
         );
     });
 
+    router.get('/favourite_marker/user/marker/:idu/:idm', function (req, res, next) {
+        db.query(
+            'SELECT * FROM favourite_marker WHERE user_id=? AND marker_id=?',
+            [
+                req.params.idu,
+                req.params.idm
+            ],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.get('/favourite_marker/marker/:id', function (req, res, next) {
         db.query(
             'SELECT * FROM favourite_marker WHERE marker_id=?',
