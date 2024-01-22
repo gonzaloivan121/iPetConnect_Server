@@ -73,6 +73,26 @@ function createRouter(db) {
         );
     });
 
+    router.get('/match/user/:id1/:id2', function (req, res, next) {
+        db.query(
+            'SELECT * FROM `match` WHERE (user1_id=? AND user2_id=?) OR (user1_id=? AND user2_id=?)',
+            [
+                req.params.id1,
+                req.params.id2,
+                req.params.id2,
+                req.params.id1
+            ],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.put('/match/:id', function (req, res, next) {
         let updated_at = new Date();
         db.query(

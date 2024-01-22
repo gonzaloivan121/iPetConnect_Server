@@ -70,6 +70,24 @@ function createRouter(db, bcrypt) {
         );
     });
 
+    router.get('/user/match/:id', function (req, res, next) {
+        db.query(
+            'SELECT * FROM user WHERE id NOT IN (SELECT l.user2_id FROM `like` l WHERE l.user1_id = ?) AND id NOT IN (SELECT m.user2_id FROM `match` m WHERE m.user1_id = ?)',
+            [
+                req.params.id,
+                req.params.id
+            ],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.get('/user/excluding/:id', function (req, res, next) {
         db.query(
             'SELECT * FROM user WHERE id!=?',
