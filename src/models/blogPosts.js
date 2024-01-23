@@ -25,7 +25,36 @@ function createRouter(db, bcrypt) {
                     console.error(error);
                     res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ success: true, message: 'Blog Post added successfully', result });
+                    res.status(200).json({ success: true, message: 'Blog Post added successfully', result, created_at });
+                }
+            }
+        );
+    });
+
+    router.post('/blog_post_tag', (req, res, next) => {
+        const post_id = req.body.post_id;
+        const tag_ids = req.body.tag_ids;
+        var str = "";
+
+        for (let index = 0; index < tag_ids.length; index++) {
+            const tag_id = tag_ids[index];
+
+            str += "(" + post_id + "," + tag_id + ")";
+            
+            if (index < tag_ids.length - 1) {
+                str += ",";
+            }
+        }
+
+        db.query(
+            'INSERT INTO blog_post_tag (post_id, tag_id) VALUES ' + str,
+            [],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, message: 'Tags added successfully to the Post', result });
                 }
             }
         );
