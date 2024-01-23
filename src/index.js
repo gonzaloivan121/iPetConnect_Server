@@ -21,6 +21,7 @@ const languages = require('./models/languages');
 const blogPosts = require('./models/blogPosts');
 const blogCategories = require('./models/blogCategories');
 const blogComments = require('./models/blogComments');
+const blogCommentLikes = require('./models/blogCommentLikes');
 const blogTags = require('./models/blogTags');
 
 const email = require('./email/email');
@@ -69,6 +70,7 @@ const app = express()
     .use(blogPosts(connection))
     .use(blogCategories(connection))
     .use(blogComments(connection))
+    .use(blogCommentLikes(connection))
     .use(blogTags(connection))
     .use(email());
 
