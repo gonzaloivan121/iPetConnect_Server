@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const morgan = require("morgan");
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const bcrypt = require("bcrypt");
 
@@ -36,7 +36,8 @@ const connection = mysql.createConnection({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    port: process.env.DB_PORT
+    port: process.env.DB_PORT,
+    charset: process.env.DB_CHARSET,
 });
 
 connection.connect();
@@ -53,8 +54,9 @@ const corsOptions = {
 // Create a new Express instance
 const app = express()
     .use(cors(corsOptions))
-    .use(bodyParser.urlencoded({ extended: false }))
-    .use(bodyParser.json())
+    .use(express.urlencoded({ extended: false }))
+    .use(express.json())
+    .use(morgan("dev"))
     .use(blogCategories(connection))
     .use(blogComments(connection))
     .use(blogCommentLikes(connection))
@@ -78,5 +80,5 @@ const app = express()
 
 // Start listening
 app.listen(port, () => {
-    console.log(`Server listening at port: ${port}`);
+    console.log(`Server listening on port ${port}`);
 });
