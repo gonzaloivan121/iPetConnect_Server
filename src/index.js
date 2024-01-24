@@ -5,24 +5,25 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const bcrypt = require("bcrypt");
 
+const blogCategories = require('./models/blogCategories');
+const blogComments = require('./models/blogComments');
+const blogCommentLikes = require('./models/blogCommentLikes');
+const blogPosts = require('./models/blogPosts');
+const blogTags = require('./models/blogTags');
 const breeds = require('./models/breeds');
 const chats = require('./models/chats');
+const config = require('./models/config');
 const favouriteMarkers = require('./models/favouriteMarkers');
+const languages = require('./models/languages');
 const likes = require('./models/likes');
 const markers = require('./models/markers');
 const matches = require('./models/matches');
 const messages = require('./models/messages');
 const pets = require('./models/pets');
+const petPosts = require('./models/petPosts');
 const roles = require('./models/roles');
 const species = require('./models/species');
-const config = require('./models/config');
 const users = require('./models/users');
-const languages = require('./models/languages');
-const blogPosts = require('./models/blogPosts');
-const blogCategories = require('./models/blogCategories');
-const blogComments = require('./models/blogComments');
-const blogCommentLikes = require('./models/blogCommentLikes');
-const blogTags = require('./models/blogTags');
 
 const email = require('./email/email');
 
@@ -54,24 +55,25 @@ const app = express()
     .use(cors(corsOptions))
     .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json())
+    .use(blogCategories(connection))
+    .use(blogComments(connection))
+    .use(blogCommentLikes(connection))
+    .use(blogPosts(connection))
+    .use(blogTags(connection))
     .use(breeds(connection))
     .use(chats(connection))
+    .use(config(connection))
     .use(favouriteMarkers(connection))
+    .use(languages(connection))
     .use(likes(connection))
     .use(markers(connection))
     .use(matches(connection))
     .use(messages(connection))
     .use(pets(connection))
+    .use(petPosts(connection))
     .use(roles(connection))
     .use(species(connection))
-    .use(config(connection))
     .use(users(connection, bcrypt))
-    .use(languages(connection))
-    .use(blogPosts(connection))
-    .use(blogCategories(connection))
-    .use(blogComments(connection))
-    .use(blogCommentLikes(connection))
-    .use(blogTags(connection))
     .use(email());
 
 // Start listening
