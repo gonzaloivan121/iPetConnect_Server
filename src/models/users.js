@@ -15,7 +15,7 @@ function createRouter(db, bcrypt) {
                 return;
             }
             db.query(
-                'INSERT INTO user (username, email, password, name, role_id, birthday, gender, bio, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)',
+                'INSERT INTO user (username, email, password, name, role_id, birthday, gender, bio, image, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
                 [
                     req.body.username,
                     req.body.email,
@@ -25,6 +25,7 @@ function createRouter(db, bcrypt) {
                     req.body.birthday,
                     req.body.gender,
                     req.body.bio,
+                    req.body.image,
                     created_at,
                     created_at
                 ],
