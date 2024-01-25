@@ -24,6 +24,7 @@ const petPosts = require('./models/petPosts');
 const roles = require('./models/roles');
 const species = require('./models/species');
 const users = require('./models/users');
+const userReports = require('./models/userReports');
 
 const email = require('./email/email');
 
@@ -76,6 +77,7 @@ const app = express()
     .use(roles(connection))
     .use(species(connection))
     .use(users(connection, bcrypt))
+    .use(userReports(connection))
     .use(email());
 
 // Start listening

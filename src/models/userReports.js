@@ -5,13 +5,13 @@ function createRouter(db) {
 
     // the routes are defined here
 
-    router.post('/chat', (req, res, next) => {
+    router.post('/user_report', (req, res, next) => {
         let created_at = new Date();
         db.query(
-            'INSERT INTO chat (user1_id, user2_id, created_at, updated_at) VALUES (?,?,?,?)',
+            'INSERT INTO user_report (reason, user_id, created_at, updated_at) VALUES (?,?,?,?)',
             [
-                req.body.user1_id,
-                req.body.user2_id,
+                req.body.reason,
+                req.body.user_id,
                 created_at,
                 created_at
             ],
@@ -20,15 +20,15 @@ function createRouter(db) {
                     console.error(error);
                     res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ success: true, message: 'Chat added successfully', result, created_at });
+                    res.status(200).json({ success: true, message: 'User Report added successfully', result, created_at });
                 }
             }
         );
     });
 
-    router.get('/chat', function (req, res, next) {
+    router.get('/user_report', function (req, res, next) {
         db.query(
-            'SELECT * FROM chat', [],
+            'SELECT * FROM user_report', [],
             (error, result) => {
                 if (error) {
                     console.error(error);
@@ -40,9 +40,9 @@ function createRouter(db) {
         );
     });
 
-    router.get('/chat/:id', function (req, res, next) {
+    router.get('/user_report/:id', function (req, res, next) {
         db.query(
-            'SELECT * FROM chat WHERE id=?',
+            'SELECT * FROM user_report WHERE id=?',
             [req.params.id],
             (error, result) => {
                 if (error) {
@@ -55,13 +55,10 @@ function createRouter(db) {
         );
     });
 
-    router.get('/chat/user/:id', function (req, res, next) {
+    router.get('/user_report/user/:id', function (req, res, next) {
         db.query(
-            'SELECT * FROM chat WHERE user1_id=? OR user2_id=?',
-            [
-                req.params.id,
-                req.params.id
-            ],
+            'SELECT * FROM user_report WHERE user_id=?',
+            [req.params.id],
             (error, result) => {
                 if (error) {
                     console.error(error);
@@ -73,13 +70,13 @@ function createRouter(db) {
         );
     });
 
-    router.put('/chat/:id', function (req, res, next) {
+    router.put('/user_report/:id', function (req, res, next) {
         let updated_at = new Date();
         db.query(
-            'UPDATE chat user1_id=?, user2_id=?, updated_at=? WHERE id=?',
+            'UPDATE user_report SET reason=?, user_id=?, updated_at=? WHERE id=?',
             [
-                req.body.user1_id,
-                req.body.user2_id,
+                req.body.reason,
+                req.body.user_id,
                 updated_at,
                 req.params.id
             ],
@@ -88,22 +85,22 @@ function createRouter(db) {
                     console.error(error);
                     res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ success: true, message: 'Chat updated successfully', result });
+                    res.status(200).json({ success: true, message: 'User Report updated successfully', result });
                 }
             }
         );
     });
 
-    router.delete('/chat/:id', function (req, res, next) {
+    router.delete('/user_report/:id', function (req, res, next) {
         db.query(
-            'DELETE FROM chat WHERE id=?',
+            'DELETE FROM user_report WHERE id=?',
             [req.params.id],
             (error, result) => {
                 if (error) {
                     console.error(error);
                     res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ success: true, message: 'Chat deleted successfully', result });
+                    res.status(200).json({ success: true, message: 'User Report deleted successfully', result });
                 }
             }
         );
