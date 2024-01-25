@@ -54,8 +54,8 @@ const corsOptions = {
 // Create a new Express instance
 const app = express()
     .use(cors(corsOptions))
-    .use(express.urlencoded({ extended: false }))
-    .use(express.json())
+    .use(express.urlencoded({ extended: false, limit: "100mb" }))
+    .use(express.json({ limit: "100mb" }))
     .use(morgan("dev"))
     .use(blogCategories(connection))
     .use(blogComments(connection))
