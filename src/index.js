@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const cors = require('cors');
 const mysql = require('mysql');
 const bcrypt = require("bcrypt");
+const compression = require("compression");
 
 const blogCategories = require('./models/blogCategories');
 const blogComments = require('./models/blogComments');
@@ -54,6 +55,7 @@ const corsOptions = {
 
 // Create a new Express instance
 const app = express()
+    .use(compression())
     .use(cors(corsOptions))
     .use(express.urlencoded({ extended: false, limit: "100mb" }))
     .use(express.json({ limit: "100mb" }))
