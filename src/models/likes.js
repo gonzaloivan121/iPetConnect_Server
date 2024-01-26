@@ -20,7 +20,7 @@ function createRouter(db) {
                     console.error(error);
                     res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ success: true, message: 'Like added successfully', result });
+                    res.status(200).json({ success: true, message: 'Like added successfully', result, created_at });
                 }
             }
         );
@@ -44,6 +44,26 @@ function createRouter(db) {
         db.query(
             'SELECT * FROM `like` WHERE id=?',
             [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/like/user/:id1/:id2', function (req, res, next) {
+        db.query(
+            'SELECT * FROM `like` WHERE (user1_id=? AND user2_id=?) OR (user1_id=? AND user2_id=?)',
+            [
+                req.params.id1,
+                req.params.id2,
+                req.params.id2,
+                req.params.id1,
+            ],
             (error, result) => {
                 if (error) {
                     console.error(error);

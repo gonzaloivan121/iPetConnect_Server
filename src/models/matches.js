@@ -20,7 +20,7 @@ function createRouter(db) {
                     console.error(error);
                     res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ success: true, message: 'Match added successfully', result });
+                    res.status(200).json({ success: true, message: 'Match added successfully', result, created_at });
                 }
             }
         );
