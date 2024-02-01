@@ -57,7 +57,7 @@ function createRouter(db) {
 
     router.get('/chat/user/:id', function (req, res, next) {
         db.query(
-            'SELECT * FROM chat WHERE user1_id=? OR user2_id=?',
+            'SELECT * FROM chat WHERE user1_id=? OR user2_id=? ORDER BY updated_at DESC',
             [
                 req.params.id,
                 req.params.id
@@ -76,7 +76,7 @@ function createRouter(db) {
     router.put('/chat/:id', function (req, res, next) {
         let updated_at = new Date();
         db.query(
-            'UPDATE chat user1_id=?, user2_id=?, updated_at=? WHERE id=?',
+            'UPDATE chat SET user1_id=?, user2_id=?, updated_at=? WHERE id=?',
             [
                 req.body.user1_id,
                 req.body.user2_id,
