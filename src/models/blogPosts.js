@@ -76,7 +76,7 @@ function createRouter(db, bcrypt) {
 
     router.get('/blog_post/latest', function (req, res, next) {
         db.query(
-            'SELECT * FROM blog_post ORDER BY id DESC', [],
+            'SELECT * FROM blog_post WHERE published=1 ORDER BY id DESC', [],
             (error, result) => {
                 if (error) {
                     console.error(error);
