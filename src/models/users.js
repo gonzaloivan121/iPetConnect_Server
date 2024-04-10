@@ -41,6 +41,27 @@ function createRouter(db, bcrypt) {
         });
     });
 
+    router.post('/user_following', (req, res, next) => {
+        let created_at = new Date();
+        db.query(
+            'INSERT INTO user_following (follower_user_id, following_user_id, created_at, updated_at) VALUES (?,?,?,?)',
+            [
+                req.body.follower_user_id,
+                req.body.following_user_id,
+                created_at,
+                created_at
+            ],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, message: 'User followed successfully', result });
+                }
+            }
+        );
+    });
+
     router.get('/user', function (req, res, next) {
         db.query(
             'SELECT * FROM user', [],
@@ -59,6 +80,21 @@ function createRouter(db, bcrypt) {
         db.query(
             'SELECT * FROM user WHERE id=?',
             [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/user/username/:username', function (req, res, next) {
+        db.query(
+            'SELECT * FROM user WHERE username=?',
+            [req.params.username],
             (error, result) => {
                 if (error) {
                     console.error(error);
@@ -94,6 +130,73 @@ function createRouter(db, bcrypt) {
         db.query(
             'SELECT * FROM user WHERE id!=?',
             [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/user_following/isFollowing/:follower_id/:following_id', function (req, res, next) {
+        db.query(
+            'SELECT * FROM user_following WHERE follower_user_id=? AND following_user_id=?',
+            [
+                req.params.follower_id,
+                req.params.following_id,
+            ],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/user_following/followers/:id', function (req, res, next) {
+        db.query(
+            'SELECT * FROM user_following WHERE following_user_id=?',
+            [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/user_following/following/:id', function (req, res, next) {
+        db.query(
+            'SELECT * FROM user_following WHERE follower_user_id=?',
+            [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/user_following/followedBy/:id/:current_user_id', function (req, res, next) {
+        db.query(
+            'SELECT u.username FROM user u INNER JOIN user_following uf ON uf.follower_user_id=u.id WHERE uf.following_user_id=? AND uf.follower_user_id!=? AND uf.follower_user_id IN (SELECT uf2.following_user_id FROM user_following uf2 WHERE uf2.follower_user_id=?) ORDER BY uf.id DESC',
+            [
+                req.params.id,
+                req.params.current_user_id,
+                req.params.current_user_id,
+            ],
             (error, result) => {
                 if (error) {
                     console.error(error);
@@ -169,6 +272,24 @@ function createRouter(db, bcrypt) {
                     res.status(500).json({ success: false, message: error });
                 } else {
                     res.status(200).json({ success: true, message: 'User deleted successfully', result });
+                }
+            }
+        );
+    });
+
+    router.delete('/user_following', function (req, res, next) {
+        db.query(
+            'DELETE FROM user_following WHERE follower_user_id=? AND following_user_id=?',
+            [
+                req.body.follower_user_id,
+                req.body.following_user_id,
+            ],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, message: 'User unfollowed successfully', result });
                 }
             }
         );
