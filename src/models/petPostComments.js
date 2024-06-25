@@ -1,24 +1,21 @@
 const express = require('express');
 
-function createRouter(db) {
+function createRouter(db, bcrypt) {
     const router = express.Router();
 
     // the routes are defined here
 
-    router.post('/marker', (req, res, next) => {
+    router.post('/pet_post_comment', (req, res, next) => {
         let created_at = new Date();
+
         db.query(
-            'INSERT INTO marker (species_id, breed_id, user_id, title, description, type, color, coordinates, image, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+            'INSERT INTO pet_post_comment (content, is_answer, answer_comment_id, post_id, user_id, created_at, updated_at) VALUES (?,?,?,?,?,?,?)',
             [
-                req.body.species_id,
-                req.body.breed_id,
+                req.body.content,
+                req.body.is_answer,
+                req.body.answer_comment_id,
+                req.body.post_id,
                 req.body.user_id,
-                req.body.title,
-                req.body.description,
-                req.body.type,
-                req.body.color,
-                req.body.coordinates,
-                req.body.image,
                 created_at,
                 created_at
             ],
@@ -27,15 +24,15 @@ function createRouter(db) {
                     console.error(error);
                     res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ success: true, message: 'Marker added successfully', result });
+                    res.status(200).json({ success: true, message: 'Pet Post Comment added successfully', result, created_at });
                 }
             }
         );
     });
 
-    router.get('/marker', function (req, res, next) {
+    router.get('/pet_post_comment', function (req, res, next) {
         db.query(
-            'SELECT * FROM marker', [],
+            'SELECT * FROM pet_post_comment', [],
             (error, result) => {
                 if (error) {
                     console.error(error);
@@ -47,9 +44,9 @@ function createRouter(db) {
         );
     });
 
-    router.get('/marker/:id', function (req, res, next) {
+    router.get('/pet_post_comment/:id', function (req, res, next) {
         db.query(
-            'SELECT * FROM marker WHERE id=?',
+            'SELECT * FROM pet_post_comment WHERE id=?',
             [req.params.id],
             (error, result) => {
                 if (error) {
@@ -62,9 +59,9 @@ function createRouter(db) {
         );
     });
 
-    router.get('/marker/user/:id', function (req, res, next) {
+    router.get('/pet_post_comment/pet_post/:id', function (req, res, next) {
         db.query(
-            'SELECT * FROM marker WHERE user_id=?',
+            'SELECT * FROM pet_post_comment WHERE post_id=? ORDER BY id DESC',
             [req.params.id],
             (error, result) => {
                 if (error) {
@@ -77,19 +74,17 @@ function createRouter(db) {
         );
     });
 
-    router.put('/marker/:id', function (req, res, next) {
+    router.put('/pet_post_comment/:id', function (req, res, next) {
         let updated_at = new Date();
+
         db.query(
-            'UPDATE marker SET species_id=?, breed_id=?, title=?, description=?, type=?, color=?, coordinates=?, image=?, updated_at=? WHERE id=?',
+            'UPDATE pet_post_comment SET content=?, is_answer=?, answer_comment_id=?, post_id=?, user_id=?, updated_at=? WHERE id=?',
             [
-                req.body.species_id,
-                req.body.breed_id,
-                req.body.title,
-                req.body.description,
-                req.body.type,
-                req.body.color,
-                req.body.coordinates,
-                req.body.image,
+                req.body.content,
+                req.body.is_answer,
+                req.body.answer_comment_id,
+                req.body.post_id,
+                req.body.user_id,
                 updated_at,
                 req.params.id
             ],
@@ -98,22 +93,22 @@ function createRouter(db) {
                     console.error(error);
                     res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ success: true, message: 'Marker updated successfully', result });
+                    res.status(200).json({ success: true, message: 'Pet Post Comment updated successfully', result });
                 }
             }
         );
     });
 
-    router.delete('/marker/:id', function (req, res, next) {
+    router.delete('/pet_post_comment/:id', function (req, res, next) {
         db.query(
-            'DELETE FROM marker WHERE id=?',
+            'DELETE FROM pet_post_comment WHERE id=?',
             [req.params.id],
             (error, result) => {
                 if (error) {
                     console.error(error);
                     res.status(500).json({ success: false, message: error });
                 } else {
-                    res.status(200).json({ success: true, message: 'Marker deleted successfully', result });
+                    res.status(200).json({ success: true, message: 'Pet Post Comment deleted successfully', result });
                 }
             }
         );

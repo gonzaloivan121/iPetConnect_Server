@@ -22,6 +22,9 @@ const matches = require('./models/matches');
 const messages = require('./models/messages');
 const pets = require('./models/pets');
 const petPosts = require('./models/petPosts');
+const petPostComments = require('./models/petPostComments');
+const petPostCommentLikes = require('./models/petPostCommentLikes');
+const petPostLikes = require('./models/petPostLikes');
 const roles = require('./models/roles');
 const species = require('./models/species');
 const users = require('./models/users');
@@ -76,6 +79,9 @@ const app = express()
     .use(messages(connection))
     .use(pets(connection))
     .use(petPosts(connection))
+    .use(petPostComments(connection))
+    .use(petPostCommentLikes(connection))
+    .use(petPostLikes(connection))
     .use(roles(connection))
     .use(species(connection))
     .use(users(connection, bcrypt))

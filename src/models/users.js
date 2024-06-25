@@ -208,6 +208,36 @@ function createRouter(db, bcrypt) {
         );
     });
 
+    router.get('/user_following/followingFull/:id', function (req, res, next) {
+        db.query(
+            'SELECT u.* FROM user u INNER JOIN user_following uf ON uf.following_user_id=u.id WHERE uf.follower_user_id=? ORDER BY uf.id DESC',
+            [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
+    router.get('/user_following/followersFull/:id', function (req, res, next) {
+        db.query(
+            'SELECT u.* FROM user u INNER JOIN user_following uf ON uf.follower_user_id=u.id WHERE uf.following_user_id=? ORDER BY uf.id DESC',
+            [req.params.id],
+            (error, result) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: error });
+                } else {
+                    res.status(200).json({ success: true, result });
+                }
+            }
+        );
+    });
+
     router.post('/user/login', function (req, res, next) {
         db.query(
             'SELECT * FROM user WHERE email=? LIMIT 1',
