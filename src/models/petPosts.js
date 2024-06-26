@@ -9,11 +9,12 @@ function createRouter(db) {
         let created_at = new Date();
 
         db.query(
-            'INSERT INTO pet_post (title, description, image, pet_id, user_id, created_at, updated_at) VALUES (?,?,?,?,?,?,?)',
+            'INSERT INTO pet_post (title, description, image, enable_comments, pet_id, user_id, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)',
             [
                 req.body.title,
                 req.body.description,
                 req.body.image,
+                req.body.enable_comments,
                 req.body.pet_id,
                 req.body.user_id,
                 created_at,
@@ -122,11 +123,12 @@ function createRouter(db) {
         let updated_at = new Date();
 
         db.query(
-            'UPDATE pet_post SET title=?, description=?, image=?, pet_id=?, user_id=?, updated_at=? WHERE id=?',
+            'UPDATE pet_post SET title=?, description=?, image=?, enable_comments=?, pet_id=?, user_id=?, updated_at=? WHERE id=?',
             [
                 req.body.title,
                 req.body.description,
                 req.body.image,
+                req.body.enable_comments,
                 req.body.pet_id,
                 req.body.user_id,
                 updated_at,
