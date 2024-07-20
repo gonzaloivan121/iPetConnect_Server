@@ -41,7 +41,7 @@ function createRouter() {
             // Store attachments
             const attachmentData = [{
                 filename: 'logo.png',
-                path: __dirname + '\\logo.png',
+                path: __dirname + '/logo.png',
                 cid: 'logo'
             }];
 
