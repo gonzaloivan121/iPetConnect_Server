@@ -6,6 +6,7 @@ const mysql = require('mysql');
 const bcrypt = require("bcrypt");
 const compression = require("compression");
 
+// DB Models
 const blogCategories = require('./models/blogCategories');
 const blogComments = require('./models/blogComments');
 const blogCommentLikes = require('./models/blogCommentLikes');
@@ -30,22 +31,35 @@ const species = require('./models/species');
 const users = require('./models/users');
 const userReports = require('./models/userReports');
 
+// Mail controller
 const email = require('./email/email');
 
 // Configure environment variables
 dotenv.config();
 
-// Create a MySQL connection
-const connection = mysql.createConnection({
+// Store environment variables in an object to
+// avoid crashes when trying to access them
+const connectionConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     port: process.env.DB_PORT,
     charset: process.env.DB_CHARSET,
-});
+}
 
-connection.connect();
+// Create a MySQL connection
+const connection = mysql.createConnection(connectionConfig);
+
+// Establish connection to the databse
+connection.connect((error) => {
+    if (error) {
+        console.error("Error connecting to DB: " + error.stack);
+        return;
+    }
+
+    console.log("Connected to DB as ID: " + connection.threadId);
+});
 
 // Store the the port
 const port = process.env.PORT || 8080;
