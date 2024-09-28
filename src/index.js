@@ -39,27 +39,24 @@ dotenv.config();
 
 // Store environment variables in an object to
 // avoid crashes when trying to access them
-const connectionConfig = {
+const poolConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     port: process.env.DB_PORT,
     charset: process.env.DB_CHARSET,
+    waitForConnections: true,
+    connectionLimit: 10, // The maximum number of connections to create at once. (Default: 10)
+    maxIdle: 3, // max idle connections, the default value is the same as `connectionLimit`
+    idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
+    queueLimit: 0,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
 }
 
-// Create a MySQL connection
-const connection = mysql.createConnection(connectionConfig);
-
-// Establish connection to the databse
-connection.connect((error) => {
-    if (error) {
-        console.error("Error connecting to DB: " + error.stack);
-        return;
-    }
-
-    console.log("Connected to DB as ID: " + connection.threadId);
-});
+// Create the connection pool. The pool-specific settings are the defaults
+const connectionPool = mysql.createPool(poolConfig);
 
 // Store the the port
 const port = process.env.PORT || 8080;
@@ -77,29 +74,29 @@ const app = express()
     .use(express.urlencoded({ extended: false, limit: "100mb" }))
     .use(express.json({ limit: "100mb" }))
     .use(morgan("dev"))
-    .use(blogCategories(connection))
-    .use(blogComments(connection))
-    .use(blogCommentLikes(connection))
-    .use(blogPosts(connection))
-    .use(blogTags(connection))
-    .use(breeds(connection))
-    .use(chats(connection))
-    .use(config(connection))
-    .use(favouriteMarkers(connection))
-    .use(languages(connection))
-    .use(likes(connection))
-    .use(markers(connection))
-    .use(matches(connection))
-    .use(messages(connection))
-    .use(pets(connection))
-    .use(petPosts(connection))
-    .use(petPostComments(connection))
-    .use(petPostCommentLikes(connection))
-    .use(petPostLikes(connection))
-    .use(roles(connection))
-    .use(species(connection))
-    .use(users(connection, bcrypt))
-    .use(userReports(connection))
+    .use(blogCategories(connectionPool))
+    .use(blogComments(connectionPool))
+    .use(blogCommentLikes(connectionPool))
+    .use(blogPosts(connectionPool))
+    .use(blogTags(connectionPool))
+    .use(breeds(connectionPool))
+    .use(chats(connectionPool))
+    .use(config(connectionPool))
+    .use(favouriteMarkers(connectionPool))
+    .use(languages(connectionPool))
+    .use(likes(connectionPool))
+    .use(markers(connectionPool))
+    .use(matches(connectionPool))
+    .use(messages(connectionPool))
+    .use(pets(connectionPool))
+    .use(petPosts(connectionPool))
+    .use(petPostComments(connectionPool))
+    .use(petPostCommentLikes(connectionPool))
+    .use(petPostLikes(connectionPool))
+    .use(roles(connectionPool))
+    .use(species(connectionPool))
+    .use(users(connectionPool, bcrypt))
+    .use(userReports(connectionPool))
     .use(email());
 
 // Start listening
