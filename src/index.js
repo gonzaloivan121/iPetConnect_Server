@@ -6,6 +6,9 @@ const mysql = require('mysql');
 const bcrypt = require("bcrypt");
 const compression = require("compression");
 
+// Middlewares
+const auth = require('./middleware/auth');
+
 // DB Models
 const blogCategories = require('./models/blogCategories');
 const blogComments = require('./models/blogComments');
@@ -74,6 +77,7 @@ const app = express()
     .use(express.urlencoded({ extended: false, limit: "100mb" }))
     .use(express.json({ limit: "100mb" }))
     .use(morgan("dev"))
+    .use(auth)
     .use(blogCategories(connectionPool))
     .use(blogComments(connectionPool))
     .use(blogCommentLikes(connectionPool))
